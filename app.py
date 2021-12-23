@@ -11,6 +11,9 @@ import fire
 import questionary
 from pathlib import Path
 
+#add csv library
+import csv
+
 from qualifier.utils.fileio import load_csv
 
 from qualifier.utils.calculators import (
@@ -102,7 +105,7 @@ def find_qualifying_loans(bank_data, credit_score, debt, income, loan, home_valu
     return bank_data_filtered
 
 
-def save_qualifying_loans(qualifying_loans):
+def save_qualifying_loans(qualifying_loans_list):
     """Saves the qualifying loans to a CSV file.
 
     Args:
@@ -111,6 +114,53 @@ def save_qualifying_loans(qualifying_loans):
     # @TODO: Complete the usability dialog for savings the CSV Files.
     # YOUR CODE HERE!
 
+    #creates a header for the csv file for the information related to the qualifying loan(s)
+    header = ["Lender", "Max Loan", "Max LTV", "Max DTI", "Min Credit", "Interest Rate"]
+
+    #sets a path for where to save the csv output file
+    output_path = Path("./data/qualifying_loans.csv")
+
+    #writes each qualifying loan to a row in the output csv file
+    with open(output_path, 'w') as csvfile:
+        csvwriter = csv.writer(csvfile)
+        csvwriter.writerow(header)
+        for row in qualifying_loans_list:
+            csvwriter.writerow([row])
+
+
+"""CSV write code from automated_equity_rounds.py
+
+# Create an empty list called `big_raisers`
+big_raisers = []
+
+# Iterate (loop) through each dictionary in the list of dictionaries.
+for equity in equity_funding:
+    # Inside of the `for` loop, write an `if` statement that
+    # appends the dictionary to the `big_raisers` list
+    # if the funding amount is greater than $50 million (50000000).
+    if equity["Amount"] >= 50000000:
+        big_raisers.append(equity)
+
+# Set the output header
+header = ["Company", "Amount", "Series"]
+
+# Create a Path to a new CSV file
+csvpath = Path("large_equity_rounds.csv")
+
+print("Writing the data to a CSV file...")
+# Open the output CSV file path using `with open`
+with open(csvpath, "w") as csvfile:
+    # Create a csvwriter
+    csvwriter = csv.writer(csvfile, delimiter=",")
+
+    # Write the header to the CSV file
+    csvwriter.writerow(header)
+
+    # Write the values of each dictionary inside of `big_raisers`
+    # as a row in the CSV file.
+    for item in big_raisers:
+        csvwriter.writerow(item.values())
+"""
 
 def run():
     """The main function for running the script."""
