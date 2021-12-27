@@ -107,28 +107,23 @@ def find_qualifying_loans(bank_data, credit_score, debt, income, loan, home_valu
 
     return bank_data_filtered
 
-#New function - check if at least one loan is identified
-
-if len(bank_data_filtered)>0:
-    print(f"Found {len(bank_data_filtered)} qualifying loans")
-
 #New function - ask if user wants to save a csv file  
 
-    def ask_print_csv():
-        ask_user = questionary.text("Do you want to save a csv file of qualifying loans").ask()
-        if ask_user=='yes':
-            csvpathsave = questionary.text("Enter a file path where you want to save your csv file of qualifying loans").ask()
-            csvpath=Path(csvpathsave)
-            print(f"Your file has been saved to {csvpathsave}")
-            return save_csv(csvpathsave)
-        elif print("No file saved. Have a good day.")           
+def save_qualifying_loans(qualifying_loans):
+    ask_user = questionary.confirm("Do you want to save a csv file of qualifying loans").ask()
+    if ask_user=='yes' and len(qualifying_loans) > 0:
+        csvpathsave = questionary.path("Enter a file path where you want to save your csv file of qualifying loans").ask()
+        csvpath=Path(csvpathsave)
+        print(f"Your file has been saved to {csvpathsave}")
+        return csvpath(csvpathsave)
+    else:
+        print("No file saved. Have a good day.")           
 
-#Finish original if statement when no loans found
-elif print("No loans were found that met your criteria. Have a good day.")            
-
-
+       
 
 
+
+####This save_csv function currently works - breaks when try to move to fileio.py
 def save_csv(qualifying_loans_list):
     #Saves the qualifying loans to a CSV file.
 
@@ -138,7 +133,7 @@ def save_csv(qualifying_loans_list):
     # @TODO: Complete the usability dialog for savings the CSV Files.
     # YOUR CODE HERE!
 
-    #creates a header for the csv file for the information related to the qualifying loan(s)
+       #creates a header for the csv file for the information related to the qualifying loan(s)
     header = ["Lender", "Max Loan", "Max LTV", "Max DTI", "Min Credit", "Interest Rate"]
 
     #sets a path for where to save the csv output file
@@ -167,6 +162,9 @@ def run():
     qualifying_loans = find_qualifying_loans(
         bank_data, credit_score, debt, income, loan_amount, home_value
     )
+
+     #asks if user wants csv file saved if at least one loan is found
+    save_qualifying_loans(qualifying_loans)
 
     # Save qualifying loans
     save_csv(qualifying_loans)
