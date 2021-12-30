@@ -14,9 +14,9 @@ from pathlib import Path
 #add csv library
 import csv
 
-#add new import of save_csv
+#add new import of save_csv from qualifier.utils.fileio
 from qualifier.utils.fileio import load_csv
-#from qualifier.utils.fileio import save_csv
+
 
 
 from qualifier.utils.calculators import (
@@ -107,24 +107,10 @@ def find_qualifying_loans(bank_data, credit_score, debt, income, loan, home_valu
 
     return bank_data_filtered
 
-#New function - ask if user wants to save a csv file  
-
-def save_qualifying_loans(qualifying_loans):
-    ask_user = questionary.confirm("Do you want to save a csv file of qualifying loans").ask()
-    if ask_user=='yes' and len(qualifying_loans) > 0:
-        csvpathsave = questionary.path("Enter a file path where you want to save your csv file of qualifying loans").ask()
-        csvpath=Path(csvpathsave)
-        print(f"Your file has been saved to {csvpathsave}")
-        return csvpath(csvpathsave)
-    else:
-        print("No file saved. Have a good day.")           
-
-       
-
-
+ 
 
 ####This save_csv function currently works - breaks when try to move to fileio.py
-def save_csv(qualifying_loans_list):
+def save_csv(qualifying_loans_list, path):
     #Saves the qualifying loans to a CSV file.
 
     '''Args:
@@ -134,19 +120,40 @@ def save_csv(qualifying_loans_list):
     # YOUR CODE HERE!
 
        #creates a header for the csv file for the information related to the qualifying loan(s)
-    header = ["Lender", "Max Loan", "Max LTV", "Max DTI", "Min Credit", "Interest Rate"]
+   # header = ["Lender", "Max Loan", "Max LTV", "Max DTI", "Min Credit", "Interest Rate"]
 
     #sets a path for where to save the csv output file
-    output_path = Path("./data/qualifying_loans.csv")
+    output_path = path
 
     #writes each qualifying loan to a row in the output csv file
-    with open(output_path, 'w') as csvfile:
-        csvwriter = csv.writer(csvfile)
-        csvwriter.writerow(header)
-        for row in qualifying_loans_list:
-            csvwriter.writerow([row])
+    with open(output_path, 'w', newline="") as csvfile:
+        csvwriter = csv.writer(csvfile, delimiter=",")
+      #  csvwriter.writerow(header)
+        csvwriter.writerows(qualifying_loans_list)
 
 
+
+#New function - ask if user wants to save a csv file and confirm at least one loan 
+# need command to actually save to new path destination 
+#Not sure what the list of qualifying loan variable is 
+
+def save_qualifying_loans(qualifying_loans_list):
+    #First check for qualifying loans - if no, say sorry and exit
+
+    if not qualifying_loans_list:
+        sys.exit("Sorry no loans found.")
+
+    ask_user = questionary.confirm("Do you want to save a csv file of qualifying loans").ask()
+    
+    if ask_user:
+        csvpathsave = questionary.path("Enter a file path where you want to save your csv file of qualifying loans").ask()
+        save_csv(qualifying_loans_list, path=Path(csvpathsave))
+        print(f"Your file has been saved to {csvpathsave}")
+        
+    else:
+        print("No file saved. Have a good day.")           
+
+    # need a return statement???  return csvpath(csvpathsave)
 
 
 def run():
@@ -163,11 +170,13 @@ def run():
         bank_data, credit_score, debt, income, loan_amount, home_value
     )
 
-     #asks if user wants csv file saved if at least one loan is found
+    #added statement to test my variable
+    print(f"# of qualifying loans: {len(qualifying_loans)}")
+
+    #asks if user wants csv file saved if at least one loan is found
     save_qualifying_loans(qualifying_loans)
 
-    # Save qualifying loans
-    save_csv(qualifying_loans)
+    
 
 
 if __name__ == "__main__":
