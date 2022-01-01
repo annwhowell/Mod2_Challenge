@@ -1,0 +1,22 @@
+    1  conda activate dev
+    2  cd Fintech_workspace
+    3  cd 03_module
+    4  cd Mod3_challenge
+    5  ls
+    6  cd mod2_challenge
+    7  cd ..
+    8  cd 02_module
+    9  cd Mod2_challenge
+   10  python app.py
+   11  python app.py
+   12  python app.py
+   13  python app.py
+   14  python app.py
+   15  python app.py
+   16  git add -A
+   17  git commit -m "Mod 2 challange ready for grading"
+   18  git pull origin main
+   19  git push origin main
+   20  cd ..
+   21  cd Mod2_challenge
+   22  history 50 > terminal_history.txt

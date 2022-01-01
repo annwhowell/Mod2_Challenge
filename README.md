@@ -36,14 +36,18 @@ To use the loan qualifier application simply clone the repository and run the **
 python app.py
 ```
 
-```the file path to the rate-sheet (prompt #1) is:
+The file path to the rate-sheet (prompt #1) is:
+```
 ./data/daily_rate_sheet.csv
 ```
 
 The program saves a csv file containing qualifying loans at:
+```
 ./data/qualifying_loans.csv
+```
 
 The app.py program relies on other files:
+```
 ./data/daiy_rate_sheet.csv
 
 ./qualifier/filters/credit_score
@@ -53,9 +57,11 @@ The app.py program relies on other files:
 
 ./qualifier/utils/calulators
 .qualifier/utils/fileio
+```
 
 ## User input
 Upon launching the loan qualifier application the user will be asked:
+---
 Enter a file path to a rate sheet (.csv)
 What's your credit score?
 What's your current amount of monthly debt?
@@ -63,8 +69,12 @@ What's your total monthly income?
 What's your desired lona mount?
 What's your home value?
 
+---
+
 After determining if at least one loan is available, the user will be asked:
 Do you want to save a csv file of qualifyng loans?
+
+---
 
 If the user wants to save a file, they will be prompted:
 Enter a file path where you want to save your csv file of qualifying loans:
