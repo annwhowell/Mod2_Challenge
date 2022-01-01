@@ -2,9 +2,10 @@
 """Loan Qualifier Application.
 
 This is a command line application to match applicants with qualifying loans.
+If they qualify for at least one loan,
+users will be asked if they want to save a csv file of the loans
+and will be prompted to input a location (path) for saving the file
 
-Example:
-    $ python app.py
 """
 import sys
 import fire
@@ -16,8 +17,6 @@ import csv
 
 #add new import of save_csv from qualifier.utils.fileio
 from qualifier.utils.fileio import load_csv
-
-
 
 from qualifier.utils.calculators import (
     calculate_monthly_debt_ratio,
@@ -109,19 +108,12 @@ def find_qualifying_loans(bank_data, credit_score, debt, income, loan, home_valu
 
  
 
-####This save_csv function currently works - breaks when try to move to fileio.py
 def save_csv(qualifying_loans_list, path):
     #Saves the qualifying loans to a CSV file.
 
     '''Args:
         qualifying_loans (list of lists): The qualifying bank loans.'''
    
-    # @TODO: Complete the usability dialog for savings the CSV Files.
-    # YOUR CODE HERE!
-
-       #creates a header for the csv file for the information related to the qualifying loan(s)
-   # header = ["Lender", "Max Loan", "Max LTV", "Max DTI", "Min Credit", "Interest Rate"]
-
     #sets a path for where to save the csv output file
     output_path = path
 
@@ -134,26 +126,31 @@ def save_csv(qualifying_loans_list, path):
 
 
 #New function - ask if user wants to save a csv file and confirm at least one loan 
-# need command to actually save to new path destination 
-#Not sure what the list of qualifying loan variable is 
 
 def save_qualifying_loans(qualifying_loans_list):
+    '''This function first checks to see if there is at least one qualifying loan
+    If yes, the user is asked if they want to save a file
+    If yes, the user is prompted to give a location to save the file
+    
+    If no qualifying loans are found, the system exits.
+    If the user does not want to save the file, the system exits'''
+    
     #First check for qualifying loans - if no, say sorry and exit
 
     if not qualifying_loans_list:
         sys.exit("Sorry no loans found.")
 
-    ask_user = questionary.confirm("Do you want to save a csv file of qualifying loans").ask()
+    ask_user = questionary.confirm("Do you want to save a csv file of qualifying loans?").ask()
     
     if ask_user:
-        csvpathsave = questionary.path("Enter a file path where you want to save your csv file of qualifying loans").ask()
+        csvpathsave = questionary.path("Enter a file path where you want to save your csv file of qualifying loans:").ask()
         save_csv(qualifying_loans_list, path=Path(csvpathsave))
         print(f"Your file has been saved to {csvpathsave}")
         
     else:
         print("No file saved. Have a good day.")           
 
-    # need a return statement???  return csvpath(csvpathsave)
+
 
 
 def run():
@@ -169,9 +166,6 @@ def run():
     qualifying_loans = find_qualifying_loans(
         bank_data, credit_score, debt, income, loan_amount, home_value
     )
-
-    #added statement to test my variable
-    print(f"# of qualifying loans: {len(qualifying_loans)}")
 
     #asks if user wants csv file saved if at least one loan is found
     save_qualifying_loans(qualifying_loans)

@@ -1,6 +1,6 @@
 # Mod2_Challenge (Loan Qualifier Application)
 
-This is a python project that builds on previous work done in loan_qualifier_application.py that writes qualifying loans (based on criteria pulled from an external csv file) into a new csv file and asks users if they want the csv file. The application works by taking in a `daily_rate_sheet` of loan criteria from various loan providers, asking the user a number of questions to evaluate their loan eligibility, returning to them the number of qualifying loans, printing the names and details of the qualifying loans to a new csv file and asking users if they want the output csv file.
+This is a python project that builds on previous work done in loan_qualifier_application.py that writes qualifying loans (based on criteria pulled from an external csv file) into a new csv file and asks users if they want to save the csv file. The application works by taking in a `daily_rate_sheet` of loan criteria from various loan providers, asking the user a number of questions to evaluate their loan eligibility, returning to them the number of qualifying loans, printing the names and details of the qualifying loans to a new csv file and asking users if they want the output csv file.
 
 ---
 
@@ -40,13 +40,34 @@ python app.py
 ./data/daily_rate_sheet.csv
 ```
 
-Csv files containing qualifying loans will be found at:
+The program saves a csv file containing qualifying loans at:
+./data/qualifying_loans.csv
 
+The app.py program relies on other files:
+./data/daiy_rate_sheet.csv
 
+./qualifier/filters/credit_score
+./qualifier/filters/debt_to_income
+./qualifier/filters/loan_to_value
+./qualifier/filters/max_loan_size
 
-Upon launching the loan qualifier application you will be greeted with the following prompts.
+./qualifier/utils/calulators
+.qualifier/utils/fileio
 
-![Loan Qualifier Prompts](Images/loan_qalifier.png)
+## User input
+Upon launching the loan qualifier application the user will be asked:
+Enter a file path to a rate sheet (.csv)
+What's your credit score?
+What's your current amount of monthly debt?
+What's your total monthly income?
+What's your desired lona mount?
+What's your home value?
+
+After determining if at least one loan is available, the user will be asked:
+Do you want to save a csv file of qualifyng loans?
+
+If the user wants to save a file, they will be prompted:
+Enter a file path where you want to save your csv file of qualifying loans:
 
 
 ---
